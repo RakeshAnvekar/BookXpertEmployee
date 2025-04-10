@@ -1,0 +1,23 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/BookXpert.Solution/FileContentIndex
+/.vs/BookXpert.Solution/config/applicationhost.config
+/.vs/BookXpert.Solution/DesignTimeBuild
+/.vs/BookXpert.Solution/v17
+/.vs/ProjectEvaluation
+/BookXpert.Backend/bin/Debug/net8.0/BookXpert.Backend.dll
+/BookXpert.Backend/bin/Debug/net8.0/BookXpert.Backend.exe
+/BookXpert.Backend/bin/Debug/net8.0/BookXpert.Backend.pdb
+/BookXpert.Backend/obj/Debug/net8.0/ref/BookXpert.Backend.dll
+/BookXpert.Backend/obj/Debug/net8.0/refint/BookXpert.Backend.dll
+/BookXpert.Backend/obj/Debug/net8.0/apphost.exe
+/BookXpert.Backend/obj/Debug/net8.0/BookXpert.Backend.AssemblyInfo.cs
+/BookXpert.Backend/obj/Debug/net8.0/BookXpert.Backend.AssemblyInfoInputs.cache
+/BookXpert.Backend/obj/Debug/net8.0/BookXpert.Backend.csproj.FileListAbsolute.txt
+/BookXpert.Backend/obj/Debug/net8.0/BookXpert.Backend.dll
+/BookXpert.Backend/obj/Debug/net8.0/BookXpert.Backend.genruntimeconfig.cache
+/BookXpert.Backend/obj/Debug/net8.0/BookXpert.Backend.pdb
+*.json
+/BookXpert.Empoyee.Client/BookXpert.Empoyee.Client.Server/obj/Debug/net8.0
