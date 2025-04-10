@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookXpert.Backend", "BookXpert.Backend\BookXpert.Backend.csproj", "{DDBE187D-120B-4D40-BB03-168320F29A0D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookXpert.Backend", "BookXpert.Backend\BookXpert.Backend.csproj", "{DDBE187D-120B-4D40-BB03-168320F29A0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookXpert.Empoyee.Client.Server", "BookXpert.Empoyee.Client\BookXpert.Empoyee.Client.Server\BookXpert.Empoyee.Client.Server.csproj", "{68396E8F-B5D3-4BB8-8734-BCAF55328585}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "BookXpert.Employee.Client", "BookXpert.Empoyee.Client\bookxpert.empoyee.client.client\BookXpert.Employee.Client.esproj", "{250EDA80-F8CE-4532-B371-67C3D8855108}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,16 @@ Global
 		{DDBE187D-120B-4D40-BB03-168320F29A0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DDBE187D-120B-4D40-BB03-168320F29A0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DDBE187D-120B-4D40-BB03-168320F29A0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68396E8F-B5D3-4BB8-8734-BCAF55328585}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68396E8F-B5D3-4BB8-8734-BCAF55328585}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68396E8F-B5D3-4BB8-8734-BCAF55328585}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68396E8F-B5D3-4BB8-8734-BCAF55328585}.Release|Any CPU.Build.0 = Release|Any CPU
+		{250EDA80-F8CE-4532-B371-67C3D8855108}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{250EDA80-F8CE-4532-B371-67C3D8855108}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{250EDA80-F8CE-4532-B371-67C3D8855108}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{250EDA80-F8CE-4532-B371-67C3D8855108}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{250EDA80-F8CE-4532-B371-67C3D8855108}.Release|Any CPU.Build.0 = Release|Any CPU
+		{250EDA80-F8CE-4532-B371-67C3D8855108}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

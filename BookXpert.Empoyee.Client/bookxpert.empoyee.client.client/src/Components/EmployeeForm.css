@@ -1,0 +1,81 @@
+.employee-page {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #2c3e50;
+  }
+  
+  .employee-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .employee-form input,
+  .employee-form select {
+    padding: 10px 14px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline-color: #3498db;
+  }
+  
+  .employee-form label {
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  
+  .form-actions button {
+    flex: 1;
+    padding: 12px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .form-actions button:last-child {
+    background-color: #95a5a6;
+  }
+  
+  .form-actions button:hover {
+    opacity: 0.9;
+  }
+  
+  /* 🔴 Error styling */
+  .input-error {
+    border: 2px solid red !important;
+    background-color: #fff5f5;
+  }
+  
+  .error-text {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: -10px;
+    margin-bottom: 10px;
+  }
+  
+  @media (max-width: 500px) {
+    .form-actions {
+      flex-direction: column;
+    }
+  }
+  
