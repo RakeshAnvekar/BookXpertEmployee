@@ -18,10 +18,10 @@ public class Employee
     public DateTime DateOfBirth { get; set; }
 
     [Required]
-    public int Age { get; set; }  
+    public int? Age { get; set; }  
 
     [Required]
-    public DateTime DateOfJoin { get; set; }
+    public DateTime? DateOfJoin { get; set; }
 
     [Required]
     [Column(TypeName = "decimal(10,2)")]

@@ -133,7 +133,7 @@ const EmployeePage: React.FC = () => {
         />
         {validationErrors.dateOfBirth && <div className="error-text">{validationErrors.dateOfBirth}</div>}
 
-        <label>Age: {employee.age}</label>
+       {employee.dateOfBirth && <label>Age: {employee.age}</label> } 
 
         <input
           name="dateOfJoin"

@@ -58,11 +58,36 @@ public class EmployeeRepository : IEmployeeRepository
         await _context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task UpdateAsync(Employee employee,CancellationToken cancellationToken)
+    public async Task UpdateAsync(Employee employee, CancellationToken cancellationToken)
     {
-        _context.Employees.Update(employee);
-        await _context.SaveChangesAsync(cancellationToken);
+        if (employee != null && employee.Id != 0) // Check for valid Id
+        {
+            var employeeDetails = await _context.Employees.FindAsync(employee.Id);
+            if (employeeDetails != null)
+            {
+                employeeDetails.Name = employee.Name;
+                employeeDetails.Designation = employee.Designation;
+                employeeDetails.DateOfBirth = employee.DateOfBirth;
+                employeeDetails.Age = employee.Age;
+                employeeDetails.DateOfJoin = employee.DateOfJoin;
+                employeeDetails.Salary = employee.Salary;
+                employeeDetails.Gender = employee.Gender;
+                employeeDetails.StateId = employee.StateId;
+
+                _context.Employees.Update(employeeDetails);
+                await _context.SaveChangesAsync(cancellationToken);
+            }
+            else
+            {
+                throw new Exception("Employee not found.");
+            }
+        }
+        else
+        {
+            throw new ArgumentException("Invalid employee or employee ID.");
+        }
     }
+
 
     public async Task DeleteAsync(int id, CancellationToken cancellationToken)
     {

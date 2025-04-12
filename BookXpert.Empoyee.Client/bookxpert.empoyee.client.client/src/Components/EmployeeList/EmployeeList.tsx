@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-
-
 import IEmployee from "../../Models/IEmployee";
 import { IState } from "../../Models/IState";
 import IocHelper from "../../Helper/IocHelper";
+import "./EmployeeList.css"
 
 const EmployeeList: React.FC = () => {
   const [employees, setEmployees] = useState<IEmployee[]>([]);
@@ -13,10 +12,8 @@ const EmployeeList: React.FC = () => {
   const [page, setPage] = useState(1);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [selectAll, setSelectAll] = useState(false);
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [idToDelete, setIdToDelete] = useState<number | null>(null);
-
   const pageSize = 5;
+
 
   const iocHelper = new IocHelper();
   const employeeRepo = iocHelper.getEmployeeRepository();
@@ -27,12 +24,6 @@ const EmployeeList: React.FC = () => {
     loadStates();
   }, [page]);
 
-  useEffect(() => {
-    // // Calculate total salary using jQuery
-    // const total = employees.reduce((acc, emp) => acc + emp.salary, 0);
-    // $("#totalSalary").text(`Total Salary: ₹ ${total}`);
-  }, [employees]);
-
   const loadStates = async () => {
     const result = await stateRepo.getAllStates();
     if (result) setStates(result);
@@ -40,9 +31,7 @@ const EmployeeList: React.FC = () => {
 
   const loadEmployees = async () => {
     const result = await employeeRepo.getPagedEmployees(page, pageSize);
-    if (result) {
-      setEmployees(result.data);
-    }
+    if (result) setEmployees(result.data);
   };
 
   const handleSearch = async () => {
@@ -52,44 +41,32 @@ const EmployeeList: React.FC = () => {
   };
 
   const openEdit = (emp: IEmployee) => {
-    setSelectedEmployee(emp);
+    setSelectedEmployee({ ...emp });
   };
 
   const handleUpdate = async () => {
-    if (selectedEmployee) {
-      const isDuplicate = await employeeRepo.checkDuplicate(selectedEmployee.name, selectedEmployee.id);
-      if (isDuplicate) {
-        alert("Duplicate employee name.");
-        return;
-      }
-
+    if (selectedEmployee && isValidEmployee(selectedEmployee)) {
       const success = await employeeRepo.updateEmployee(selectedEmployee.id!, selectedEmployee);
       if (success) {
         alert("Updated successfully");
         setSelectedEmployee(null);
         loadEmployees();
       }
+    } else {
+      alert("Please fix validation errors.");
     }
   };
 
-  const confirmDelete = (id: number) => {
-    setIdToDelete(id);
-    setShowDeleteDialog(true);
-  };
-
-  const handleDelete = async () => {
-    if (idToDelete != null) {
-      await employeeRepo.deleteEmployee(idToDelete);
+  const handleDelete = async (id: number) => {
+    if (window.confirm("Are you sure to delete?")) {
+      await employeeRepo.deleteEmployee(id);
       loadEmployees();
-      setShowDeleteDialog(false);
-      setIdToDelete(null);
     }
   };
 
   const handleMultiDelete = async () => {
     if (selectedIds.length === 0) return;
-    const confirm = window.confirm("Delete selected employees?");
-    if (!confirm) return;
+    if (!window.confirm("Delete selected employees?")) return;
     await employeeRepo.deleteMultiple(selectedIds);
     setSelectedIds([]);
     loadEmployees();
@@ -110,27 +87,33 @@ const EmployeeList: React.FC = () => {
     setSelectAll(!selectAll);
   };
 
+  const isValidEmployee = (e: IEmployee) =>
+    e.name &&
+    e.age && e.age > 0 &&
+    e.dateOfBirth &&
+    e.dateOfJoin &&
+    e.salary > 0 &&
+    e.gender &&
+    e.stateId;
+
   return (
     <div className="employee-list">
       <h2>Employee List</h2>
 
-      <div className="search-actions">
-        <input
-          type="text"
-          placeholder="Search by name"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        <button onClick={handleSearch}>Search</button>
-        <button onClick={handleMultiDelete}>Delete Selected</button>
-      </div>
+      <input
+        type="text"
+        placeholder="Search by name"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+      <button onClick={handleSearch}>Search</button>
+      <button onClick={handleMultiDelete}>Delete Selected</button>
 
       <table>
         <thead>
           <tr>
             <th><input type="checkbox" checked={selectAll} onChange={toggleSelectAll} /></th>
             <th>Name</th>
-            <th>Designation</th>
             <th>DOB</th>
             <th>Age</th>
             <th>DOJ</th>
@@ -143,57 +126,67 @@ const EmployeeList: React.FC = () => {
         <tbody>
           {employees.map((emp) => (
             <tr key={emp.id}>
-              <td>
-                <input
-                  type="checkbox"
-                  checked={selectedIds.includes(emp.id!)}
-                  onChange={() => toggleCheckbox(emp.id!)}
-                />
-              </td>
-              <td className="editable" onClick={() => openEdit(emp)}>{emp.name}</td>
-              <td>{emp.designation}</td>
-              <td>{emp.dateOfBirth}</td>
-              <td>{emp.age}</td>
-              <td>{emp.dateOfJoin}</td>
+              <td><input type="checkbox" checked={selectedIds.includes(emp.id!)} onChange={() => toggleCheckbox(emp.id!)} /></td>
+              <td onClick={() => openEdit(emp)} style={{ cursor: "pointer", color: "blue" }}>{emp.name}</td>
+              <td>{emp.dateOfBirth?.substring(0, 10)}</td>
+              <td >{emp.age}</td>
+              <td>{emp.dateOfJoin?.substring(0, 10)}</td>
               <td>{emp.salary}</td>
               <td>{emp.gender}</td>
               <td>{states.find(s => s.id === emp.stateId)?.name}</td>
-              <td>
-                <button onClick={() => confirmDelete(emp.id!)}>Delete</button>
-              </td>
+              <td><button onClick={() => handleDelete(emp.id!)}>Delete</button></td>
             </tr>
           ))}
         </tbody>
       </table>
 
       <div className="pagination">
-        <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}>Previous</button>
+        <button disabled={page === 1} onClick={() => setPage(page - 1)}>Previous</button>
         <span>Page {page}</span>
-        <button onClick={() => setPage((p) => p + 1)} disabled={employees.length < pageSize}>Next</button>
+        <button disabled={employees.length < pageSize} onClick={() => setPage(page + 1)}>Next</button>
       </div>
 
-      <div id="totalSalary" className="salary-bar"></div>
-
-      {/* Edit Dialog */}
+      {/* Edit Form Popup */}
       {selectedEmployee && (
         <div className="modal">
           <div className="modal-content">
             <h3>Edit Employee</h3>
-            <input value={selectedEmployee.name} onChange={(e) => setSelectedEmployee({ ...selectedEmployee, name: e.target.value })} />
-            <input value={selectedEmployee.designation} onChange={(e) => setSelectedEmployee({ ...selectedEmployee, designation: e.target.value })} />
-            <button onClick={handleUpdate}>Update</button>
-            <button onClick={() => setSelectedEmployee(null)}>Cancel</button>
-          </div>
-        </div>
-      )}
 
-      {/* Delete Confirmation */}
-      {showDeleteDialog && (
-        <div className="modal">
-          <div className="modal-content">
-            <h4>Are you sure you want to delete?</h4>
-            <button onClick={handleDelete}>Yes</button>
-            <button onClick={() => setShowDeleteDialog(false)}>No</button>
+            <label>Name</label>
+            <input value={selectedEmployee.name} onChange={(e) => setSelectedEmployee({ ...selectedEmployee, name: e.target.value })} />
+
+            <label>Age</label>
+            <input type="number" readOnly={true} value={selectedEmployee.age ?? ""} onChange={(e) => setSelectedEmployee({ ...selectedEmployee, age: parseInt(e.target.value) })} />
+
+            <label>Date of Birth</label>
+            <input type="date" value={selectedEmployee.dateOfBirth?.substring(0, 10)} onChange={(e) => setSelectedEmployee({ ...selectedEmployee, dateOfBirth: e.target.value })} />
+
+            <label>Date of Joining</label>
+            <input type="date" value={selectedEmployee.dateOfJoin?.substring(0, 10)} onChange={(e) => setSelectedEmployee({ ...selectedEmployee, dateOfJoin: e.target.value })} />
+
+            <label>Salary</label>
+            <input type="number" value={selectedEmployee.salary} onChange={(e) => setSelectedEmployee({ ...selectedEmployee, salary: parseFloat(e.target.value) })} />
+
+            <label>Gender</label>
+            <select value={selectedEmployee.gender} onChange={(e) => setSelectedEmployee({ ...selectedEmployee, gender: e.target.value })}>
+              <option value="">Select</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+
+            <label>State</label>
+            <select value={selectedEmployee.stateId} onChange={(e) => setSelectedEmployee({ ...selectedEmployee, stateId: parseInt(e.target.value) })}>
+              <option value="">Select</option>
+              {states.map((s) => (
+                <option key={s.id} value={s.id}>{s.name}</option>
+              ))}
+            </select>
+
+            <div style={{ marginTop: 10 }}>
+              <button onClick={handleUpdate} disabled={!isValidEmployee(selectedEmployee)}>Update</button>
+              <button onClick={() => setSelectedEmployee(null)}>Cancel</button>
+            </div>
           </div>
         </div>
       )}
